@@ -3,14 +3,15 @@ const Item = require("../models/productsModel");
 // Créer un nouvel article
 const createItem = async (req, res) => {
   try {
-    const sellerId = req.user.id;
-    const newItem = new Item({
-      ...req.body,
-      seller: sellerId,
-    });
+    // const sellerId = req.user.id;
+    const itemsData = Array.isArray(req.body) ? req.body : [req.body];
+    // const newItems = itemsData.map(itemData => new Item({
+    //   ...itemData,
+    //   seller: sellerId,
+    // }));
 
-    await newItem.save();
-    res.status(201).json(newItem);
+    const savedItems = await Item.insertMany(itemsData);
+    res.status(201).json(savedItems);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
