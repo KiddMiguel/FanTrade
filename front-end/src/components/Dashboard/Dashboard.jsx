@@ -1,21 +1,40 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import StatCard from "../StatCard/StatCard";
-import BarChartVertical from "../BarChartVertical/BarChartVertical"; // Nouveau graphique vertical
+import BarChartVertical from "../BarChartVertical/BarChartVertical";
+import DoughnutChart from "../DoughnutChart/DoughnutChart";
 import DataTable from "../DataTable/DataTable";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
-import DoughnutChart from "../DoughnutChart/DoughnutChart";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
-    // Données fictives pour les produits avec dates de création
+    // Données fictives pour les produits avec des champs _id, seller, et createdAt
     const products = [
-        { id: "1", name: "Ergonomic Chair", price: 120.99, category: "Furniture", owner: "User123", createdAt: "2023-01-15" },
-        { id: "2", name: "Wireless Keyboard", price: 45.99, category: "Electronics", owner: "User456", createdAt: "2023-02-20" },
-        { id: "3", name: "Noise Cancelling Headphones", price: 199.99, category: "Electronics", owner: "User789", createdAt: "2023-03-05" },
-        { id: "4", name: "Standing Desk", price: 299.99, category: "Furniture", owner: "User123", createdAt: "2023-01-25" },
-        { id: "5", name: "LED Desk Lamp", price: 29.99, category: "Accessories", owner: "User456", createdAt: "2023-02-10" },
+        {
+            _id: "676488bb2387b5efe17799f1",
+            name: "Progressive systematic task-force",
+            description: "Us medical law prevent. Main drug hair still away boy season stock.",
+            price: 563.49,
+            category: "digital",
+            universe: "Furniture",
+            images: [
+                "https://via.placeholder.com/250",
+                "https://via.placeholder.com/150",
+                "https://via.placeholder.com/200",
+            ],
+            seller: "dacdba84e7bfae0608649f09",
+            stock: 15,
+            ratings: [
+                {
+                    user: "dacdba84e7bfae0608649f09",
+                    rating: 4,
+                    comment: "Others want grow know we see part yeah responsibility wonder factor difference.",
+                },
+            ],
+            createdAt: "2024-12-19T20:57:31.744Z",
+        },
+        // Ajoutez d'autres produits similaires ici
     ];
 
     // Statistiques calculées à partir des produits
@@ -23,12 +42,12 @@ const Dashboard = () => {
     const totalRevenue = products.reduce((sum, product) => sum + product.price, 0).toFixed(2);
     const uniqueCategories = [...new Set(products.map((product) => product.category))].length;
 
-    // Données mises à jour pour les StatCards
+    // Données pour les StatCards
     const stats = [
         { title: "Total Products", value: totalProducts, icon: "📦", color: "orange" },
         { title: "Total Revenue", value: `${totalRevenue} €`, icon: "💰", color: "green" },
         { title: "Unique Categories", value: uniqueCategories, icon: "📊", color: "blue" },
-        { title: "Top Owner", value: "User123", icon: "👤", color: "purple" },
+        { title: "Average Stock", value: (products.reduce((sum, product) => sum + product.stock, 0) / totalProducts).toFixed(2), icon: "📈", color: "purple" },
     ];
 
     // Calcul des produits par mois
@@ -38,7 +57,6 @@ const Dashboard = () => {
         return acc;
     }, {});
 
-    // Préparer les données pour le BarChart Vertical
     const barChartVerticalData = {
         labels: Object.keys(productsByMonth), // Mois
         datasets: [
@@ -50,6 +68,7 @@ const Dashboard = () => {
         ],
     };
 
+    // Produits par catégorie pour Doughnut Chart
     const productsByCategory = products.reduce((acc, product) => {
         acc[product.category] = (acc[product.category] || 0) + 1;
         return acc;
@@ -61,7 +80,7 @@ const Dashboard = () => {
             {
                 data: Object.values(productsByCategory), // Nombre de produits par catégorie
                 backgroundColor: [
-                    "rgba(255, 99, 132, 0.5)", // Couleurs pour chaque catégorie
+                    "rgba(255, 99, 132, 0.5)",
                     "rgba(54, 162, 235, 0.5)",
                     "rgba(255, 206, 86, 0.5)",
                     "rgba(75, 192, 192, 0.5)",
@@ -94,7 +113,7 @@ const Dashboard = () => {
                     <DataTable />
                 </Grid>
 
-                <Grid item xs={12} md={4} sx={{ height: "50%" }}>
+                <Grid item xs={12} md={4}>
                     <DoughnutChart
                         data={doughnutChartData}
                         options={{
@@ -105,7 +124,7 @@ const Dashboard = () => {
                 </Grid>
             </Grid>
 
-            <Box sx={{ marginTop: 4, height: "50%", width: "40%" }}>
+            <Box sx={{ marginTop: 4 }}>
                 <BarChartVertical
                     data={barChartVerticalData}
                     options={{
