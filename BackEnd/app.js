@@ -1,12 +1,13 @@
 const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+
 const app = express();
+const PORT = 8060;
+
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-const PORT = 8060;
-const cors = require("cors");
-app.use(cors({ origin: "http://localhost:3000" }));
-
-const mongoose = require("mongoose");
 mongoose
   .connect("mongodb://127.0.0.1:27017/fanTrade", {})
   .then(() => {

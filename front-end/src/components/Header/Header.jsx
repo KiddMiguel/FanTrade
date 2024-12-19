@@ -1,6 +1,17 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Box, Button } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
+
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  IconButton,
+  Badge,
+} from "@mui/material";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -10,7 +21,15 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" color="default" sx={{ padding: "0 16px", boxShadow: "none", borderBottom: "1px solid #ddd" }}>
+    <AppBar
+      position="static"
+      color="default"
+      sx={{
+        padding: "0 16px",
+        boxShadow: "none",
+        borderBottom: "1px solid #ddd",
+      }}
+    >
       <Toolbar>
         {/* Logo */}
         <Typography
@@ -30,11 +49,13 @@ const Header = () => {
             onClick={() => handleNavigation("/")}
           >
             Accueil
+
           </Typography>
           <Typography
             variant="button"
             sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
             onClick={() => handleNavigation("/products")}
+
           >
             Produits
           </Typography>
@@ -42,6 +63,7 @@ const Header = () => {
             variant="button"
             sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
             onClick={() => handleNavigation("/dashboard")}
+
           >
             Dashboard
           </Typography>
@@ -53,6 +75,7 @@ const Header = () => {
           color="primary"
           sx={{ textTransform: "none" }}
           onClick={() => handleNavigation("/login")}
+
         >
           Connexion
         </Button>
