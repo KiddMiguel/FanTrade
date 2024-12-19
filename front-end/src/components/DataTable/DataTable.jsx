@@ -11,10 +11,15 @@ import {
   Paper,
   TablePagination,
   TextField,
+  IconButton,
+  Button,
 } from "@mui/material";
+import { Edit, Delete, Add } from "@mui/icons-material";
+import ModalYesNo from "../ModalYesNo/ModalYesNo";
+import ModalAddEdit from "../ModalAddEdit/ModalAddEdit";
+import { deleteProduct } from "../../api/api";
 
 const DataTable = () => {
-  // Données fictives pour les produits
   const initialProducts = [
     {
       id: "1",
@@ -40,76 +45,91 @@ const DataTable = () => {
       category: "Electronics",
       owner: "User789",
     },
-    {
-      id: "4",
-      name: "Standing Desk",
-      description: "Adjustable desk for a healthier working posture.",
-      price: 299.99,
-      category: "Furniture",
-      owner: "User123",
-    },
-    {
-      id: "5",
-      name: "LED Desk Lamp",
-      description: "Energy-efficient lamp with adjustable brightness.",
-      price: 29.99,
-      category: "Accessories",
-      owner: "User456",
-    },
-    {
-      id: "6",
-      name: "LED Desk Lamp",
-      description: "Energy-efficient lamp with adjustable brightness.",
-      price: 29.99,
-      category: "Accessories",
-      owner: "User456",
-    },
   ];
 
   const [products, setProducts] = useState(initialProducts);
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
+  const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
+  const [modalAddEditOpen, setModalAddEditOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [productToEdit, setProductToEdit] = useState(null);
 
-  // Pagination
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleDeleteClick = (product) => {
+    setProductToDelete(product);
+    setModalDeleteOpen(true);
+  };
 
-  // Gestion des filtres
-  const handleFilter = (e) => {
-    const value = e.target.value.toLowerCase();
-    const filtered = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(value) ||
-        product.description.toLowerCase().includes(value) ||
-        product.category.toLowerCase().includes(value) ||
-        product.owner.toLowerCase().includes(value)
+  const confirmDelete = async () => {
+    try {
+      await deleteProduct(productToDelete.id);
+      setProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
+      setFilteredProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
+      setModalDeleteOpen(false);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  const cancelDelete = () => {
+    setModalDeleteOpen(false);
+  };
+
+  const handleAddClick = () => {
+    setProductToEdit(null);
+    setModalAddEditOpen(true);
+  };
+
+  const handleEditClick = (product) => {
+    setProductToEdit(product);
+    setModalAddEditOpen(true);
+  };
+
+  const handleSaveProduct = (product) => {
+    if (productToEdit) {
+      setProducts((prev) => prev.map((p) => (p.id === product.id ? product : p)));
+    } else {
+      setProducts((prev) => [...prev, { ...product, id: Date.now().toString() }]);
+    }
+    setFilteredProducts((prev) =>
+      productToEdit
+        ? prev.map((p) => (p.id === product.id ? product : p))
+        : [...prev, { ...product, id: Date.now().toString() }]
     );
-    setFilteredProducts(filtered);
-  };
-
-  // Pagination handlers
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setModalAddEditOpen(false);
   };
 
   return (
     <Box sx={{ marginTop: 4 }}>
       <Typography variant="h6" gutterBottom>
-        Product List
+        Liste des produits
       </Typography>
 
-      {/* Filtre */}
-      <TextField
-        label="Search..."
-        variant="outlined"
-        fullWidth
-        sx={{ marginBottom: 2 }}
-        onChange={handleFilter}
-      />
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+        <TextField
+          label="Search..."
+          variant="outlined"
+          fullWidth
+          onChange={(e) => {
+            const value = e.target.value.toLowerCase();
+            setFilteredProducts(
+              products.filter(
+                (product) =>
+                  product.name.toLowerCase().includes(value) ||
+                  product.description.toLowerCase().includes(value)
+              )
+            );
+          }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Add />}
+          sx={{ marginLeft: 2, textTransform: "none", borderRadius: "8px", padding: "8px 20px" }}
+          onClick={handleAddClick}
+        >
+          Ajouter
+        </Button>
+      </Box>
 
       <TableContainer component={Paper}>
         <Table>
@@ -120,34 +140,57 @@ const DataTable = () => {
               <TableCell>Description</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Category</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProducts
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.id}</TableCell>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell>{product.description}</TableCell>
-                  <TableCell>{product.price.toFixed(2)} €</TableCell>
-                  <TableCell>{product.category}</TableCell>
-                </TableRow>
-              ))}
+            {filteredProducts.map((product) => (
+              <TableRow key={product.id}>
+                <TableCell>{product.id}</TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.description}</TableCell>
+                <TableCell>{product.price.toFixed(2)} €</TableCell>
+                <TableCell>{product.category}</TableCell>
+                <TableCell>
+                  <IconButton color="primary" onClick={() => handleEditClick(product)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton color="error" onClick={() => handleDeleteClick(product)}>
+                    <Delete />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
 
-        {/* Pagination */}
         <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
+          rowsPerPageOptions={[5, 10]}
           component="div"
           count={filteredProducts.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPage={5}
+          page={0}
+          onPageChange={() => {}}
+          onRowsPerPageChange={() => {}}
         />
       </TableContainer>
+
+      {/* Modal Yes/No */}
+      <ModalYesNo
+        open={modalDeleteOpen}
+        title="Confirmation de suppression"
+        description={`Voulez-vous vraiment supprimer le produit "${productToDelete?.name}" ?`}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
+
+      {/* Modal Add/Edit */}
+      <ModalAddEdit
+        open={modalAddEditOpen}
+        product={productToEdit}
+        onSave={handleSaveProduct}
+        onCancel={() => setModalAddEditOpen(false)}
+      />
     </Box>
   );
 };

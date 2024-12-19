@@ -1,4 +1,7 @@
 import React from "react";
+
+import { useNavigate } from "react-router-dom";
+
 import {
   AppBar,
   Toolbar,
@@ -11,6 +14,12 @@ import {
 } from "@mui/material";
 
 const Header = () => {
+    const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <AppBar
       position="static"
@@ -26,7 +35,8 @@ const Header = () => {
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, fontWeight: "bold", color: "#E53935" }}
+          sx={{ flexGrow: 1, fontWeight: "bold", color: "#E53935", cursor: "pointer" }}
+          onClick={() => handleNavigation("/")}
         >
           FAN<span style={{ color: "#1976D2" }}>TRADE</span>
         </Typography>
@@ -36,18 +46,24 @@ const Header = () => {
           <Typography
             variant="button"
             sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
+            onClick={() => handleNavigation("/")}
           >
-            Acceuil
+            Accueil
+
           </Typography>
           <Typography
             variant="button"
             sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
+            onClick={() => handleNavigation("/products")}
+
           >
             Produits
           </Typography>
           <Typography
             variant="button"
             sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
+            onClick={() => handleNavigation("/dashboard")}
+
           >
             Dashboard
           </Typography>
@@ -58,6 +74,8 @@ const Header = () => {
           variant="contained"
           color="primary"
           sx={{ textTransform: "none" }}
+          onClick={() => handleNavigation("/login")}
+
         >
           Connexion
         </Button>

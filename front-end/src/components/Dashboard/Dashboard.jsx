@@ -3,6 +3,7 @@ import { Box, Grid } from "@mui/material";
 import StatCard from "../StatCard/StatCard";
 import BarChartVertical from "../BarChartVertical/BarChartVertical";
 import DoughnutChart from "../DoughnutChart/DoughnutChart";
+import { Inventory, AttachMoney, Category, Star } from "@mui/icons-material";
 import DataTable from "../DataTable/DataTable";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
 
@@ -31,6 +32,11 @@ const Dashboard = () => {
                     rating: 4,
                     comment: "Others want grow know we see part yeah responsibility wonder factor difference.",
                 },
+                {
+                    user: "abc123def456789ghi012jkl345",
+                    rating: 5,
+                    comment: "Amazing product quality!",
+                },
             ],
             createdAt: "2024-12-19T20:57:31.744Z",
         },
@@ -42,12 +48,26 @@ const Dashboard = () => {
     const totalRevenue = products.reduce((sum, product) => sum + product.price, 0).toFixed(2);
     const uniqueCategories = [...new Set(products.map((product) => product.category))].length;
 
+    // Calcul de la moyenne totale des ratings
+    const totalRatings = products.reduce((sum, product) => sum + product.ratings.length, 0);
+    const averageRating =
+        totalRatings > 0
+            ? (
+                  products.reduce(
+                      (sum, product) =>
+                          sum + product.ratings.reduce((ratingSum, rating) => ratingSum + rating.rating, 0),
+                      0
+                  ) / totalRatings
+              ).toFixed(2)
+            : "N/A";
+
     // Données pour les StatCards
+
     const stats = [
-        { title: "Total Products", value: totalProducts, icon: "📦", color: "orange" },
-        { title: "Total Revenue", value: `${totalRevenue} €`, icon: "💰", color: "green" },
-        { title: "Unique Categories", value: uniqueCategories, icon: "📊", color: "blue" },
-        { title: "Average Stock", value: (products.reduce((sum, product) => sum + product.stock, 0) / totalProducts).toFixed(2), icon: "📈", color: "purple" },
+        { title: "Total Products", value: totalProducts, icon: <Inventory />, color: "orange" },
+        { title: "Total Revenue", value: `${totalRevenue} €`, icon: <AttachMoney />, color: "green" },
+        { title: "Unique Categories", value: uniqueCategories, icon: <Category />, color: "blue" },
+        { title: "Average Rating", value: averageRating, icon: <Star />, color: "purple" },
     ];
 
     // Calcul des produits par mois

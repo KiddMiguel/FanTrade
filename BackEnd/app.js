@@ -9,7 +9,7 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/fanTrade", {})
+  .connect("mongodb://127.0.0.1:27017/fanTrade", {})
   .then(() => {
     console.log("Connected to the mongoDB database!");
   })
