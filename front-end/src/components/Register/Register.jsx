@@ -1,7 +1,17 @@
-import React from "react";
-import { Box, Button, TextField, Typography, Container, Stack, Link, Checkbox, FormControlLabel } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Stack,
+  Link,
+  Alert,
+} from "@mui/material";
 import { styled } from "@mui/system";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Style de la page
 const StyledContainer = styled(Container)(({ theme }) => ({
@@ -21,54 +31,113 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 const RegisterPage = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegister = () => {
+    axios
+      .post("http://localhost:8060/register", {
+        name,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setSuccessMessage("Registration successful! Redirecting to login...");
+        setErrorMessage("");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
+      })
+      .catch((error) => {
+        if (error.response) {
+          setErrorMessage(
+            error.response.data.error || "Error during registration"
+          );
+        } else {
+          setErrorMessage("An error occurred during registration");
+        }
+        setSuccessMessage("");
+      });
+  };
+
   return (
     <StyledContainer maxWidth="lg">
-      {/* Section Gauche - Texte */}
       <Box flex={1} textAlign="center" paddingRight={4}>
         <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Manage the job
+          Join the Fun
         </Typography>
-        <Typography variant="body1" color="textSecondary">
-          More effectively with optimized workflows.
-        </Typography>
+        <Typography variant="body1" color="textSecondary"></Typography>
       </Box>
 
-      {/* Section Droite - Formulaire */}
       <StyledBox>
         <Typography variant="h5" fontWeight="bold" mb={2} textAlign="center">
           Get started absolutely free
         </Typography>
         <Typography variant="body2" mb={3} textAlign="center">
-          Already have an account? <Link href="/login" underline="hover">Get started</Link>
+          Already have an account?{" "}
+          <Link href="/login" underline="hover">
+            Sign in
+          </Link>
         </Typography>
 
-        {/* Champs Prénom, Nom, Email et Mot de Passe */}
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        {successMessage && <Alert severity="success">{successMessage}</Alert>}
+
         <Stack spacing={2} mb={2}>
-          <Stack direction="row" spacing={2}>
-            <TextField fullWidth label="First name" variant="outlined" />
-            <TextField fullWidth label="Last name" variant="outlined" />
-          </Stack>
-          <TextField fullWidth label="Email address" variant="outlined" />
-          <TextField fullWidth label="Password" type="password" variant="outlined" placeholder="6+ characters" />
+          <TextField
+            fullWidth
+            label="Name"
+            variant="outlined"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Email address"
+            variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            variant="outlined"
+            placeholder="6+ characters"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Stack>
 
         {/* Bouton Register */}
-        <Button variant="contained" fullWidth size="large" sx={{ mb: 2 }}>
+        <Button
+          variant="contained"
+          fullWidth
+          size="large"
+          sx={{ mb: 2 }}
+          onClick={handleRegister}
+        >
           Create account
         </Button>
 
         {/* Conditions */}
         <Typography variant="caption" textAlign="center" display="block">
-          By signing up, I agree to <Link href="#" underline="hover">Terms of service</Link> and <Link href="#" underline="hover">Privacy policy</Link>.
+          By signing up, I agree to{" "}
+          <Link href="#" underline="hover">
+            Terms of service
+          </Link>{" "}
+          and{" "}
+          <Link href="#" underline="hover">
+            Privacy policy
+          </Link>
+          .
         </Typography>
       </StyledBox>
-
-      {/* Bouton d'Aide */}
-      <Box position="absolute" top={16} right={16}>
-        <Link href="#" underline="none" color="inherit">
-          <HelpOutlineIcon /> Need help?
-        </Link>
-      </Box>
     </StyledContainer>
   );
 };
