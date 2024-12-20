@@ -83,12 +83,26 @@ const ProductDetail = () => {
       <Grid container spacing={4}>
         {/* Image Section */}
         <Grid item xs={12} md={6}>
-          <Card sx={{ borderRadius: "10px", overflow: "hidden", boxShadow: 3 }}>
+          <Card
+            sx={{
+              borderRadius: "10px",
+              overflow: "hidden",
+              boxShadow: 3,
+              height: "350px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <CardMedia
               component="img"
               image={product.images[0]}
               alt={product.name}
-              sx={{ objectFit: "cover", height: "100%" }}
+              sx={{
+                objectFit: "cover",
+                width: "100%",
+                height: "100%",
+              }}
             />
           </Card>
         </Grid>
@@ -119,7 +133,7 @@ const ProductDetail = () => {
                 variant="subtitle1"
                 sx={{ fontWeight: "bold", mr: 1 }}
               >
-                Ratings:
+                Note moyenne:
               </Typography>
               <Rating
                 value={
@@ -153,7 +167,7 @@ const ProductDetail = () => {
                   flex: 1,
                 }}
               >
-                Add to Cart
+                Ajouter au panier
               </Button>
               <Button
                 variant="outlined"
@@ -165,7 +179,7 @@ const ProductDetail = () => {
                   flex: 1,
                 }}
               >
-                Buy Now
+                Acheter maintenant
               </Button>
             </Box>
           </CardContent>
@@ -209,7 +223,7 @@ const ProductDetail = () => {
           <Button
             variant="contained"
             color="primary"
-            sx={{ mt: 2, textTransform: "none" }}
+            sx={{ mt: 2, textTransform: "none" }} 
             onClick={handleAddComment}
           >
             Envoyer
