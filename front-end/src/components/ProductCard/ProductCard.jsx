@@ -2,6 +2,11 @@ import React from "react";
 import { Card, CardMedia, CardContent, Typography, Button, Box, Rating } from "@mui/material";
 
 const ProductCard = ({ product }) => {
+
+  const handleSeeCart = (product) => {
+    console.log(`${product.name} ajouté au panier.`);
+  };
+  
   return (
     <Card
       sx={{
@@ -43,12 +48,23 @@ const ProductCard = ({ product }) => {
         <Typography variant="h6" color="primary" sx={{ fontWeight: "bold" }}>
           {product.price} €
         </Typography>
-        <Button variant="contained" color="primary" sx={{ marginTop: "10px", textTransform: "none", borderRadius: "8px", width: "100%" }}>
-          Voir
-        </Button>
+        <Button
+  variant="outlined"
+  color="secondary"
+  sx={{
+    marginTop: "10px",
+    textTransform: "none",
+    borderRadius: "8px",
+    width: "100%",
+  }}
+  onClick={() => handleSeeCart(product)}
+>
+  Voir
+</Button>
+
       </CardContent>
     </Card>
-  );
+  )
 };
 
 export default ProductCard;
