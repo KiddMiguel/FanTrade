@@ -51,7 +51,14 @@ const ModalAddEdit = ({ open, product, onSave, onCancel }) => {
   };
 
   const handleSave = () => {
-    if (!formData.name || !formData.description || !formData.price || !formData.category || !formData.image || !formData.stock) {
+    if (
+      !formData.name ||
+      !formData.description ||
+      !formData.price ||
+      !formData.category ||
+      !formData.image ||
+      !formData.stock
+    ) {
       alert("Tous les champs sont obligatoires.");
       return;
     }
@@ -60,7 +67,9 @@ const ModalAddEdit = ({ open, product, onSave, onCancel }) => {
 
   return (
     <Dialog open={open} onClose={onCancel} maxWidth="sm" fullWidth>
-      <DialogTitle>{product ? "Modifier le produit" : "Ajouter un produit"}</DialogTitle>
+      <DialogTitle>
+        {product ? "Modifier le produit" : "Ajouter un produit"}
+      </DialogTitle>
       <DialogContent>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <TextField
@@ -95,9 +104,8 @@ const ModalAddEdit = ({ open, product, onSave, onCancel }) => {
             onChange={handleChange}
             fullWidth
           >
-            <MenuItem value="Meubles">Meubles</MenuItem>
-            <MenuItem value="Electronics">Électronique</MenuItem>
-            <MenuItem value="Accessories">Accessoires</MenuItem>
+            <MenuItem value="Physical">Physical</MenuItem>
+            <MenuItem value="Digital">Digital</MenuItem>
           </TextField>
           <TextField
             name="image"

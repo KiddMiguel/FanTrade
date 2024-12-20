@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "../../components/Carousel/Carousel";
-import image1 from "../../assets/images/image1.jpg";
-import image2 from "../../assets/images/image2.jpg";
-import image3 from "../../assets/images/image3.jpg";
+import image1 from "../../assets/images/image1.webp";
+import image2 from "../../assets/images/image2.webp";
+import image3 from "../../assets/images/image3.webp";
 import { Box, Typography } from "@mui/material";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import { getProducts } from "../../api/api";
@@ -25,21 +25,21 @@ const Accueil = () => {
 
   const carouselItems = [
     {
-      title: "Summer Sale",
-      subtitle: "Sale starting at $20",
+      title: "",
+      subtitle: "",
+      buttonText: "Shop Now",
+      image: image2,
+    },
+    {
+      title: "",
+      subtitle: "",
       buttonText: "Shop Now",
       image: image1,
     },
     {
-      title: "Modern Furniture",
-      subtitle: "Get up to 50% off",
-      buttonText: "Discover",
-      image: image2,
-    },
-    {
-      title: "Latest Gadgets",
-      subtitle: "Affordable prices for you",
-      buttonText: "Explore Now",
+      title: "",
+      subtitle: "",
+      buttonText: "Join FanTrade",
       image: image3,
     },
   ];
