@@ -11,11 +11,20 @@ const Carousel = ({ items }) => {
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + items.length) % items.length
+    );
   };
 
   return (
-    <Box sx={{ position: "relative", overflow: "hidden", height: "500px", width: "100%" }}>
+    <Box
+      sx={{
+        position: "relative",
+        overflow: "hidden",
+        height: "500px",
+        width: "100%",
+      }}
+    >
       {items.map((item, index) => (
         <Box
           key={index}
@@ -45,8 +54,8 @@ const Carousel = ({ items }) => {
           <Box
             sx={{
               position: "absolute",
-              top: "50%",
-              left: "10%",
+              bottom: "0",
+              left: "45%",
               transform: "translateY(-50%)",
               color: "white",
             }}

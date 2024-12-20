@@ -34,9 +34,11 @@ const DataTable = ({ initialProducts }) => {
 
   const confirmDelete = async () => {
     try {
-      await deleteProduct(productToDelete.id);
-      setProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
-      setFilteredProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
+      await deleteProduct(productToDelete._id);
+      setProducts((prev) => prev.filter((p) => p._id !== productToDelete._id));
+      setFilteredProducts((prev) =>
+        prev.filter((p) => p._id !== productToDelete._id)
+      );
       setModalDeleteOpen(false);
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -62,8 +64,12 @@ const DataTable = ({ initialProducts }) => {
       if (productToEdit) {
         const updatedProduct = await updateProduct(productToEdit._id, product);
         console.log("updatedProduct", updatedProduct);
-        setProducts((prev) => prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p)));
-        setFilteredProducts((prev) => prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p)));
+        setProducts((prev) =>
+          prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p))
+        );
+        setFilteredProducts((prev) =>
+          prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p))
+        );
       } else {
         const newProduct = await createProduct(product);
         setProducts((prev) => [...prev, newProduct]);
@@ -81,7 +87,14 @@ const DataTable = ({ initialProducts }) => {
         Liste des produits
       </Typography>
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 2,
+        }}
+      >
         <TextField
           label="Search..."
           variant="outlined"
@@ -101,7 +114,12 @@ const DataTable = ({ initialProducts }) => {
           variant="contained"
           color="primary"
           startIcon={<Add />}
-          sx={{ marginLeft: 2, textTransform: "none", borderRadius: "8px", padding: "8px 20px" }}
+          sx={{
+            marginLeft: 2,
+            textTransform: "none",
+            borderRadius: "8px",
+            padding: "8px 20px",
+          }}
           onClick={handleAddClick}
         >
           Ajouter
@@ -121,16 +139,22 @@ const DataTable = ({ initialProducts }) => {
           </TableHead>
           <TableBody>
             {filteredProducts.map((product) => (
-              <TableRow key={product.id}>
+              <TableRow key={product._id}>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.description}</TableCell>
                 <TableCell>{product?.price.toFixed(2)} €</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleEditClick(product)}>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleEditClick(product)}
+                  >
                     <Edit />
                   </IconButton>
-                  <IconButton color="error" onClick={() => handleDeleteClick(product)}>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleDeleteClick(product)}
+                  >
                     <Delete />
                   </IconButton>
                 </TableCell>
