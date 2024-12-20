@@ -4,9 +4,9 @@ const Item = require("../models/productsModel");
 const createItem = async (req, res) => {
   try {
     const items = Array.isArray(req.body) ? req.body : [req.body];
-    const itemsWithSeller = items.map(item => ({ ...item, seller: req.user.id }));
+    // const itemsWithSeller = items.map(item => ({ ...item, seller: req.user.id }));
 
-    const createdItems = await Item.insertMany(itemsWithSeller);
+    const createdItems = await Item.insertMany(items);
 
     res.status(201).send(createdItems.length === 1 ? createdItems[0] : createdItems);
   } catch (error) {
