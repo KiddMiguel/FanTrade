@@ -31,6 +31,7 @@ const ProductDetail = () => {
       try {
         const productData = await getProductById(id);
         setProduct(productData);
+        console.log(product);
         setComments(productData.ratings);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -96,7 +97,7 @@ const ProductDetail = () => {
           >
             <CardMedia
               component="img"
-              image={product.images[0]}
+              image={product.images[0] || "https://via.placeholder.com/300"}
               alt={product.name}
               sx={{
                 objectFit: "cover",
@@ -138,8 +139,7 @@ const ProductDetail = () => {
               <Rating
                 value={
                   product.ratings.reduce((sum, r) => sum + r.rating, 0) /
-                    product.ratings.length ||
-                  0
+                    product.ratings.length || 0
                 }
                 precision={0.5}
                 readOnly
@@ -223,7 +223,7 @@ const ProductDetail = () => {
           <Button
             variant="contained"
             color="primary"
-            sx={{ mt: 2, textTransform: "none" }} 
+            sx={{ mt: 2, textTransform: "none" }}
             onClick={handleAddComment}
           >
             Envoyer

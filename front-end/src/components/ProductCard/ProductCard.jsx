@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
       <CardMedia
         component="img"
         height="180"
-        image={product.images[0] || "https://via.placeholder.com/300"}
+        image={product?.images[0] || "https://via.placeholder.com/300"}
         alt={product.name}
         sx={{
           objectFit: "cover",
@@ -102,7 +102,7 @@ const ProductCard = ({ product }) => {
           }}
           onClick={() => handleSeeCart(product)}
         >
-          Voir
+          Open
         </Button>
       </CardContent>
     </Card>
