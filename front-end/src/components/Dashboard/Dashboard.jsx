@@ -6,9 +6,26 @@ import DoughnutChart from "../DoughnutChart/DoughnutChart";
 import { Inventory, AttachMoney, Category, Star } from "@mui/icons-material";
 import DataTable from "../DataTable/DataTable";
 import { getUserByToken, getProductsBySellerId } from "../../api/api";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
@@ -19,8 +36,10 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const userData = await getUserByToken();
+        console.log("userData", userData);
         setUser(userData);
         const productsData = await getProductsBySellerId(userData.id);
+        console.log("productsData", productsData);
         if (!productsData.error) {
           setProducts(productsData);
         } else {
@@ -51,17 +70,28 @@ const Dashboard = () => {
   }
   // Statistiques calculées à partir des produits
   const totalProducts = products.length;
-  const totalRevenue = products.reduce((sum, product) => sum + product.price, 0).toFixed(2);
-  const uniqueCategories = [...new Set(products.map((product) => product.category))].length;
+  const totalRevenue = products
+    .reduce((sum, product) => sum + product.price, 0)
+    .toFixed(2);
+  const uniqueCategories = [
+    ...new Set(products.map((product) => product.category)),
+  ].length;
 
   // Calcul de la moyenne totale des ratings
-  const totalRatings = products.reduce((sum, product) => sum + product.ratings.length, 0);
+  const totalRatings = products.reduce(
+    (sum, product) => sum + product.ratings.length,
+    0
+  );
   const averageRating =
     totalRatings > 0
       ? (
           products.reduce(
             (sum, product) =>
-              sum + product.ratings.reduce((ratingSum, rating) => ratingSum + rating.rating, 0),
+              sum +
+              product.ratings.reduce(
+                (ratingSum, rating) => ratingSum + rating.rating,
+                0
+              ),
             0
           ) / totalRatings
         ).toFixed(2)
@@ -69,15 +99,37 @@ const Dashboard = () => {
 
   // Données pour les StatCards
   const stats = [
-    { title: "Total Products", value: totalProducts, icon: <Inventory />, color: "orange" },
-    { title: "Total Revenue", value: `${totalRevenue} €`, icon: <AttachMoney />, color: "green" },
-    { title: "Unique Categories", value: uniqueCategories, icon: <Category />, color: "blue" },
-    { title: "Average Rating", value: averageRating, icon: <Star />, color: "purple" },
+    {
+      title: "Total Products",
+      value: totalProducts,
+      icon: <Inventory />,
+      color: "orange",
+    },
+    {
+      title: "Total Revenue",
+      value: `${totalRevenue} €`,
+      icon: <AttachMoney />,
+      color: "green",
+    },
+    {
+      title: "Unique Categories",
+      value: uniqueCategories,
+      icon: <Category />,
+      color: "blue",
+    },
+    {
+      title: "Average Rating",
+      value: averageRating,
+      icon: <Star />,
+      color: "purple",
+    },
   ];
 
   // Calcul des produits par mois
   const productsByMonth = products.reduce((acc, product) => {
-    const month = new Date(product.createdAt).toLocaleString("default", { month: "short" });
+    const month = new Date(product.createdAt).toLocaleString("default", {
+      month: "short",
+    });
     acc[month] = (acc[month] || 0) + 1;
     return acc;
   }, {});
@@ -127,7 +179,12 @@ const Dashboard = () => {
       <Grid container spacing={4}>
         {stats.map((stat, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
-            <StatCard title={stat.title} value={stat.value} icon={stat.icon} color={stat.color} />
+            <StatCard
+              title={stat.title}
+              value={stat.value}
+              icon={stat.icon}
+              color={stat.color}
+            />
           </Grid>
         ))}
       </Grid>
@@ -135,7 +192,7 @@ const Dashboard = () => {
       {/* Graphiques */}
       <Grid container spacing={4} sx={{ marginTop: 4 }}>
         <Grid item xs={12} md={8}>
-          <DataTable initialProducts ={products} />
+          <DataTable initialProducts={products} />
         </Grid>
 
         <Grid item xs={12} md={4}>
