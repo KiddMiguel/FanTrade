@@ -6,9 +6,12 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in the .env file");
+}
+
 const Register = async (req, res) => {
   try {
-    console.log(req.body);
     if (!req.body.password) {
       return res.status(400).send({ error: "Password is required, duh!" });
     }
@@ -21,7 +24,20 @@ const Register = async (req, res) => {
 
     await user.save();
 
-    res.status(201).send(user);
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    res.status(201).send({ 
+      user: {
+      id: user._id,
+      name: user.name,
+      email: user.email
+      }, 
+      token 
+    });
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
@@ -88,7 +104,14 @@ const getUserByToken = async (req, res) => {
       return res.status(404).json({ message: "User not found or inactive" });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({ 
+      user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      // Add other fields you want to return here, excluding the password
+      }
+    });
   } catch (error) {
     res
       .status(401)

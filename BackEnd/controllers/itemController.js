@@ -3,17 +3,15 @@ const Item = require("../models/productsModel");
 // Créer un nouvel article
 const createItem = async (req, res) => {
   try {
-    // const sellerId = req.user.id;
-    const itemsData = Array.isArray(req.body) ? req.body : [req.body];
-    // const newItems = itemsData.map(itemData => new Item({
-    //   ...itemData,
-    //   seller: sellerId,
-    // }));
+    const item = new Item({
+      ...req.body,
+      seller: req.user.id,
+    });
 
-    const savedItems = await Item.insertMany(itemsData);
-    res.status(201).json(savedItems);
+    await item.save();
+    res.status(201).send(item);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).send({ error: error.message });
   }
 };
 
@@ -99,7 +97,7 @@ const getItemsBySellerId = async (req, res) => {
     );
 
     if (!items.length) {
-      return res.status(404).json({ error: "No items found for this seller" });
+      return res.status(201).json({ error: "No items found for this seller" });
     }
 
     res.status(200).json(items);
