@@ -17,13 +17,13 @@ const itemSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["physical", "digital"],
+    // enum: ["physical", "digital"],
     required: true,
   },
-  universe: {
-    type: String,
-    required: true,
-  },
+  // universe: {
+  //   type: String,
+  //   required: true,
+  // },
   images: [
     {
       type: String,
