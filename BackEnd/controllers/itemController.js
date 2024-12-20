@@ -7,8 +7,7 @@ const createItem = async (req, res) => {
       ...req.body,
       seller: req.user.id,
     });
-
-    await item.save();
+    console.log(item);
     res.status(201).send(item);
   } catch (error) {
     res.status(400).send({ error: error.message });

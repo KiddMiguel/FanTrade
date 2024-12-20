@@ -40,8 +40,10 @@ export const getProducts = async () => {
 
 // Fonction pour créer un produit
 export const createProduct = async (data) => {
+  console.log("data", data);
   try {
     const response = await axios.post(`${API_URL}/create`, data);
+
     return response.data;
   } catch (error) {
     console.error("Error creating product:", error);

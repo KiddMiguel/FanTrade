@@ -44,8 +44,8 @@ const ProductDetail = () => {
   const handleAddComment = () => {
     if (newComment.trim()) {
       const newCommentData = {
-        user: "Anonymous", // Replace with actual user data if available
-        rating: 5, // Default rating for new comments (customize as needed)
+        user: "Anonymous",
+        rating: 5,
         comment: newComment,
       };
       setComments([...comments, newCommentData]);
@@ -97,7 +97,7 @@ const ProductDetail = () => {
           >
             <CardMedia
               component="img"
-              image={product.images[0] || "https://via.placeholder.com/300"}
+              image={product.images || "https://via.placeholder.com/300"}
               alt={product.name}
               sx={{
                 objectFit: "cover",

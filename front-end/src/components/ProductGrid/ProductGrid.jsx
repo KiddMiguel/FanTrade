@@ -55,8 +55,10 @@ const ProductGrid = ({ products }) => {
                 component="img"
                 height="180"
                 image={
+                  product.image ||
                   " https://ideogram.ai/assets/image/lossless/response/RQ4UoT0iSGq3BhHe-mDOjQ"
-                } // Assurez-vous que chaque produit a une propriété "image"
+                }
+                // Assurez-vous que chaque produit a une propriété "image"
                 alt={product.name}
                 sx={{
                   objectFit: "contain", // Modifie l'ajustement de l'image
