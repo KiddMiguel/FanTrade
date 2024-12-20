@@ -95,7 +95,7 @@ const ModalAddEdit = ({ open, product, onSave, onCancel }) => {
             onChange={handleChange}
             fullWidth
           >
-            <MenuItem value="Furniture">Meubles</MenuItem>
+            <MenuItem value="Meubles">Meubles</MenuItem>
             <MenuItem value="Electronics">Électronique</MenuItem>
             <MenuItem value="Accessories">Accessoires</MenuItem>
           </TextField>
