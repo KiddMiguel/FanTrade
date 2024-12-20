@@ -92,3 +92,14 @@ export const addRatingToProduct = async (itemId, rating) => {
     throw error;
   }
 };
+
+// Fonction pour obtenir un produit par ID
+export const getProductById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/products/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product by ID:', error);
+    throw error;
+  }
+};

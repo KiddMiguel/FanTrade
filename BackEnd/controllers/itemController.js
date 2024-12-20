@@ -38,6 +38,20 @@ const getItems = async (req, res) => {
   }
 };
 
+const getItemsById = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.itemId);
+
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
 // Mettre à jour un article existant
 const updateItem = async (req, res) => {
   try {
@@ -141,4 +155,5 @@ module.exports = {
   deleteItem,
   getItemsBySellerId,
   addRatingToItem,
+  getItemsById
 };
