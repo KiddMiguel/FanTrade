@@ -16,6 +16,17 @@ axios.interceptors.request.use(
   }
 );
 
+// Fonction pour obtenir les informations de l'utilisateur connecté
+export const getUserByToken = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/me`);
+    return response.data.user;
+  } catch (error) {
+    console.error('Failed to fetch user', error);
+    throw error;
+  }
+};
+
 // Fonction pour obtenir les produits
 export const getProducts = async () => {
   try {

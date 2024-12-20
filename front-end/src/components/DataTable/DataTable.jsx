@@ -17,36 +17,9 @@ import {
 import { Edit, Delete, Add } from "@mui/icons-material";
 import ModalYesNo from "../ModalYesNo/ModalYesNo";
 import ModalAddEdit from "../ModalAddEdit/ModalAddEdit";
-import { deleteProduct } from "../../api/api";
+import { deleteProduct, createProduct, updateProduct } from "../../api/api";
 
-const DataTable = () => {
-  const initialProducts = [
-    {
-      id: "1",
-      name: "Ergonomic Chair",
-      description: "Comfortable office chair with lumbar support.",
-      price: 120.99,
-      category: "Furniture",
-      owner: "User123",
-    },
-    {
-      id: "2",
-      name: "Wireless Keyboard",
-      description: "Compact and stylish keyboard with long battery life.",
-      price: 45.99,
-      category: "Electronics",
-      owner: "User456",
-    },
-    {
-      id: "3",
-      name: "Noise Cancelling Headphones",
-      description: "Over-ear headphones with active noise cancellation.",
-      price: 199.99,
-      category: "Electronics",
-      owner: "User789",
-    },
-  ];
-
+const DataTable = ({ initialProducts }) => {
   const [products, setProducts] = useState(initialProducts);
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
@@ -84,18 +57,22 @@ const DataTable = () => {
     setModalAddEditOpen(true);
   };
 
-  const handleSaveProduct = (product) => {
-    if (productToEdit) {
-      setProducts((prev) => prev.map((p) => (p.id === product.id ? product : p)));
-    } else {
-      setProducts((prev) => [...prev, { ...product, id: Date.now().toString() }]);
+  const handleSaveProduct = async (product) => {
+    try {
+      if (productToEdit) {
+        const updatedProduct = await updateProduct(productToEdit._id, product);
+        console.log("updatedProduct", updatedProduct);
+        setProducts((prev) => prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p)));
+        setFilteredProducts((prev) => prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p)));
+      } else {
+        const newProduct = await createProduct(product);
+        setProducts((prev) => [...prev, newProduct]);
+        setFilteredProducts((prev) => [...prev, newProduct]);
+      }
+      setModalAddEditOpen(false);
+    } catch (error) {
+      console.error("Error saving product:", error);
     }
-    setFilteredProducts((prev) =>
-      productToEdit
-        ? prev.map((p) => (p.id === product.id ? product : p))
-        : [...prev, { ...product, id: Date.now().toString() }]
-    );
-    setModalAddEditOpen(false);
   };
 
   return (
@@ -135,21 +112,19 @@ const DataTable = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell>Nom</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Category</TableCell>
+              <TableCell>Prix</TableCell>
+              <TableCell>Catégorie</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredProducts.map((product) => (
               <TableRow key={product.id}>
-                <TableCell>{product.id}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.description}</TableCell>
-                <TableCell>{product.price.toFixed(2)} €</TableCell>
+                <TableCell>{product?.price.toFixed(2)} €</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => handleEditClick(product)}>

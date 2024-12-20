@@ -47,11 +47,10 @@ const RegisterPage = () => {
       })
       .then((response) => {
         console.log(response.data);
+        localStorage.setItem("token", response.data.token);
         setSuccessMessage("Registration successful! Redirecting to login...");
         setErrorMessage("");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
+        window.location.href = "/"; 
       })
       .catch((error) => {
         if (error.response) {

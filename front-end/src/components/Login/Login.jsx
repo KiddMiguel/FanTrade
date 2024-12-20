@@ -44,7 +44,7 @@ const LoginPage = () => {
       .then((response) => {
         console.log(response.data);
         localStorage.setItem("token", response.data.token); // Save JWT token in localStorage
-        navigate("/dashboard");
+        window.location.href = "/"; 
       })
       .catch((error) => {
         setErrorMessage("Erreur lors de la connexion");
