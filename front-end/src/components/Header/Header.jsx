@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -67,7 +67,12 @@ const Header = () => {
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, fontWeight: "bold", color: "#E53935", cursor: "pointer" }}
+          sx={{
+            flexGrow: 1,
+            fontWeight: "bold",
+            color: "#E53935",
+            cursor: "pointer",
+          }}
           onClick={() => handleNavigation("/")}
         >
           FAN<span style={{ color: "#1976D2" }}>TRADE</span>
@@ -89,13 +94,15 @@ const Header = () => {
           >
             Produits
           </Typography>
-          <Typography
-            variant="button"
-            sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
-            onClick={() => handleNavigation("/dashboard")}
-          >
-            Dashboard
-          </Typography>
+          {user && (
+            <Typography
+              variant="button"
+              sx={{ color: "#000", cursor: "pointer", textTransform: "none" }}
+              onClick={() => handleNavigation("/dashboard")}
+            >
+              Dashboard
+            </Typography>
+          )}
         </Box>
 
         {/* Login/Signup Button or User Menu */}
@@ -106,10 +113,13 @@ const Header = () => {
               aria-haspopup="true"
               onClick={handleMenuOpen}
               endIcon={<ArrowDropDownIcon />}
-              sx={{ textTransform: "none", backgroundColor: "rgb(25, 118, 210)", color: "white" }}
+              sx={{
+                textTransform: "none",
+                backgroundColor: "rgb(25, 118, 210)",
+                color: "white",
+              }}
             >
-
-                <PersonIcon sx={{ color: "white" }} />
+              <PersonIcon sx={{ color: "white" }} />
               {user.name}
             </Button>
             <Menu
@@ -118,7 +128,9 @@ const Header = () => {
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={() => handleNavigation("/profile")}>Profil</MenuItem>
+              <MenuItem onClick={() => handleNavigation("/profile")}>
+                Profil
+              </MenuItem>
               <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
             </Menu>
           </Box>

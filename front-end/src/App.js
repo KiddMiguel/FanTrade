@@ -9,6 +9,10 @@ import Products from "./pages/Products/Products";
 import ProductDetail from "./pages/Products/ProductDetail";
 
 function App() {
+  const products = [
+    // ... vos produits ici ...
+  ];
+
   return (
     <>
     <Header />
@@ -18,7 +22,7 @@ function App() {
         <Route path="/" element={<Accueil />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/Product/:id" element={<ProductDetail />} />
+        <Route path="/product/:id" element={<ProductDetail products={products} />} />
       </Routes>
       
     </>
