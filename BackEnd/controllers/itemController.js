@@ -3,13 +3,13 @@ const Item = require("../models/productsModel");
 // Créer un nouvel article
 const createItem = async (req, res) => {
   try {
-
     const items = Array.isArray(req.body) ? req.body : [req.body];
     // const itemsWithSeller = items.map(item => ({ ...item, seller: req.user.id }));
-
     const createdItems = await Item.insertMany(items);
 
-    res.status(201).send(createdItems.length === 1 ? createdItems[0] : createdItems);
+    res
+      .status(201)
+      .send(createdItems.length === 1 ? createdItems[0] : createdItems);
   } catch (error) {
     res.status(400).send({ error: error.message });
   }

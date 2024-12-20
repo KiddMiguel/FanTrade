@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Typography, TextField, InputAdornment, MenuItem, Select, FormControl, InputLabel, Pagination } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  TextField,
+  InputAdornment,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Pagination,
+} from "@mui/material";
 import { Search } from "@mui/icons-material";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { getProducts } from "../../api/api";
@@ -15,6 +26,7 @@ const Products = () => {
   });
   const [page, setPage] = useState(1);
   const itemsPerPage = 16;
+  console.log("products", products);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -41,15 +53,22 @@ const Products = () => {
   };
 
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = filter.category ? product.category === filter.category : true;
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchesCategory = filter.category
+      ? product.category.toLowerCase() === filter.category.toLowerCase()
+      : true;
     const matchesPrice =
       (filter.minPrice ? product.price >= parseFloat(filter.minPrice) : true) &&
       (filter.maxPrice ? product.price <= parseFloat(filter.maxPrice) : true);
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
-  const paginatedProducts = filteredProducts.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   return (
     <Box sx={{ padding: "20px" }}>
@@ -147,14 +166,21 @@ const Products = () => {
             </Grid>
           ))
         ) : (
-          <Typography variant="h6" color="textSecondary" align="center" sx={{ width: "100%", marginTop: "20px" }}>
+          <Typography
+            variant="h6"
+            color="textSecondary"
+            align="center"
+            sx={{ width: "100%", marginTop: "20px" }}
+          >
             Pas de produits trouvés
           </Typography>
         )}
       </Grid>
 
       {/* Pagination */}
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
         <Pagination
           count={Math.ceil(filteredProducts.length / itemsPerPage)}
           page={page}

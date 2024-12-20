@@ -97,7 +97,7 @@ const ProductDetail = () => {
           >
             <CardMedia
               component="img"
-              image={product.images || "https://via.placeholder.com/300"}
+              image={product.image || "https://via.placeholder.com/300"}
               alt={product.name}
               sx={{
                 objectFit: "cover",
