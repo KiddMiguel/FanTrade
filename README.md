@@ -9,8 +9,6 @@ FanTrade est une application full-stack permettant aux utilisateurs d'acheter et
 - [Installation](#installation)
 - [Scripts](#scripts)
 - [API Endpoints](#api-endpoints)
-- [Captures d'écran](#captures-décran)
-- [Auteur](#auteur)
 
 ---
 
