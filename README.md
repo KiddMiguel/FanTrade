@@ -48,7 +48,7 @@ FanTrade est une application full-stack permettant aux utilisateurs d'acheter et
 ### Étapes
 ```bash
 # Cloner le dépôt
-https://github.com/user/fantrade.git
+[https://github.com/user/fantrade.git](https://github.com/KiddMiguel/FanTrade.git)
 
 # Accéder au dossier backend
 cd fantrade/backend
