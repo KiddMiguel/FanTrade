@@ -20,7 +20,7 @@ const ModalAddEdit = ({ open, product, onSave, onCancel }) => {
     image: "", // Ajouter le champ image
     stock: "", // Ajouter le champ stock
   });
-
+  console.log("product", product);
   useEffect(() => {
     if (product) {
       setFormData({

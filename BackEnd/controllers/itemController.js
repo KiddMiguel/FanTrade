@@ -5,10 +5,11 @@ const createItem = async (req, res) => {
   try {
     const items = Array.isArray(req.body) ? req.body : [req.body];
     // const itemsWithSeller = items.map(item => ({ ...item, seller: req.user.id }));
-
     const createdItems = await Item.insertMany(items);
 
-    res.status(201).send(createdItems.length === 1 ? createdItems[0] : createdItems);
+    res
+      .status(201)
+      .send(createdItems.length === 1 ? createdItems[0] : createdItems);
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
@@ -49,7 +50,7 @@ const getItemsById = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 
 // Mettre à jour un article existant
 const updateItem = async (req, res) => {
@@ -104,10 +105,7 @@ const deleteItem = async (req, res) => {
 // Obtenir les articles d'un vendeur spécifique
 const getItemsBySellerId = async (req, res) => {
   try {
-    const items = await Item.find({ seller: req.params.sellerId }).populate(
-      "seller",
-      "name email"
-    );
+    const items = await Item.find({ seller: req.params.sellerId });
 
     if (!items.length) {
       return res.status(201).json({ error: "No items found for this seller" });
@@ -154,5 +152,5 @@ module.exports = {
   deleteItem,
   getItemsBySellerId,
   addRatingToItem,
-  getItemsById
+  getItemsById,
 };

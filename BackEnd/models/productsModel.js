@@ -24,11 +24,11 @@ const itemSchema = new mongoose.Schema({
   //   type: String,
   //   required: true,
   // },
-  images: 
-    {
-      type: String,
-    },
-  
+
+  image: {
+    type: String,
+  },
+
   seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
